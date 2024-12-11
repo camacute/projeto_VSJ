@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Alunos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        form input {
+            flex: 1 1 calc(33.333% - 10px);
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            flex: 1 1 100%;
+            padding: 10px;
+            font-size: 1rem;
+            color: #fff;
+            background: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        form button:hover {
+            background: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+        }
+
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Alunos</h1>
+        <form id="studentForm">
+            <input type="text" id="name" placeholder="Nome" required>
+            <input type="number" id="age" placeholder="Idade" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <button type="submit">Adicionar Aluno</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="studentTableBody">
+                <!-- Conteúdo dinâmico -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const studentForm = document.getElementById('studentForm');
+        const studentTableBody = document.getElementById('studentTableBody');
+
+        studentForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const email = document.getElementById('email').value;
+
+            addStudent(name, age, email);
+            studentForm.reset();
+        });
+
+        function addStudent(name, age, email) {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${age}</td>
+                <td>${email}</td>
+                <td>
+                    <button class="action-btn edit-btn" onclick="editStudent(this)">Editar</button>
+                    <button class="action-btn delete-btn" onclick="deleteStudent(this)">Excluir</button>
+                </td>
+            `;
+
+            studentTableBody.appendChild(row);
+        }
+
+        function editStudent(button) {
+            const row = button.closest('tr');
+            const cells = row.querySelectorAll('td');
+
+            document.getElementById('name').value = cells[0].textContent;
+            document.getElementById('age').value = cells[1].textContent;
+            document.getElementById('email').value = cells[2].textContent;
+
+            studentTableBody.removeChild(row);
+        }
+
+        function deleteStudent(button) {
+            const row = button.closest('tr');
+            studentTableBody.removeChild(row);
+        }
+    </script>
+</body>
+</html>
+
